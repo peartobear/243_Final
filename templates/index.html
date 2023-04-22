@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEOR 243 Project - News Summary Generation </title>
+    <style>
+        body {
+            --block-background-color: #F7F7F7;
+            font-family: system-ui, sans-serif;
+            --block-text-color: #333;
+            background: #abcdef;
+            color: #222;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        h1 {
+            margin: 20px;
+        }
+
+        form {
+            margin: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin: 20px auto;
+            width: 200px;
+            height: 50px;
+        }
+
+        h2 {
+            margin: 20px;
+        }
+
+        .color.themed {
+             --block-accent-color: #3a5ec5;
+             --block-shadow-color: #555;
+}         
+        .grey {
+            --block-background-color: #E5E5E5;        }
+        
+        h1.block.fixed.grey {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        footer {
+            font-size: 14px;
+            text-align: center;
+            margin-top: auto;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="block fixed grey">UC Berkeley IEOR 243 Project - News Article Summarizer</h1>
+    <form action="/" method="post">
+        <label for="article" class="block grey">Enter article:</label>
+        <textarea id="article" name="article" class="block" rows="10" cols="100">{{ article }}</textarea>
+        <input type="submit" value="Generate Summary" class="accent block color themed">
+        {% if summary %}
+            <input type="hidden" name="summary" value="{{ summary }}">
+        {% endif %}
+    </form>
+    {% if summary %}
+        <h2 class="block">Generated Summary:</h2>
+        <p class="block">{{ summary }}</p>
+    {% endif %}
+    <footer>Made with ❤️ by Adedeji Aluko, Jack O' Donoghue, Kashin Shah, Apurva Arni, Bora Unalmis, & Ankur Kumar</footer>
+
+</body>
+
+</html>
