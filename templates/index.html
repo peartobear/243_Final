@@ -67,7 +67,14 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            margin: 0;
+            margin: 0;        }
+        
+        .dark.themed {
+            --block-text-color: #f8f8f8;
+            --block-background-color: #222;
+            --block-accent-color: #0000;
+            --block-shadow-color: #555;
+            background: #444;
         }
 
         footer {
@@ -83,7 +90,7 @@
     </style>
 </head>
 <body>
-    <h1 class="block fixed grey">UC Berkeley IEOR 243 Project - News Article Summarizer</h1>
+      <h1 class="block fixed grey ">UC Berkeley IEOR 243 Project - News Article Summarizer</h1>
     <form action="/" method="post">
         <label for="article" class="block grey">Enter article:</label>
         <textarea id="article" name="article" class="block" rows="10" cols="100">{{ article }}</textarea>
@@ -93,8 +100,13 @@
         {% endif %}
     </form>
     {% if summary %}
-        <h2 class="block">Generated Summary:</h2>
+        <h2 class="block grey">Generated Summary:</h2>
         <p class="block">{{ summary }}</p>
+    {% endif %}
+
+    {% if sentiment_score %}
+    <h2 class="block grey">Sentiment Score:</h2>
+    <p class="block dark themed">Positive 🥳: {{ sentiment_score.pos }} | Neutral 😶: {{ sentiment_score.neu }} | Negative 😔: {{ sentiment_score.neg }}</p>
     {% endif %}
     <footer>Made with ❤️ by Adedeji Aluko, Jack O' Donoghue, Kashin Shah, Apurva Arni, Bora Unalmis, & Ankur Kumar</footer>
 

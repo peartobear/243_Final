@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
 
 app = Flask(__name__)
 
@@ -40,18 +42,26 @@ def generate_summary(article):
   
     return summary
 
+# Initializing the sentiment analyzer
 
-# basic api with get and post routes
+sia = SentimentIntensityAnalyzer()
 
+# function to analyze sentiment
+
+def analyze_sentiment(summary):
+    sentiment_score = sia.polarity_scores(summary)
+    return sentiment_score
+
+# function to render the index.html page
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-  if request.method == 'POST':
-    article = request.form['article']
-    summary = generate_summary(article)
-    return render_template('index.html', summary=summary)
-  return render_template('index.html')
-
+    if request.method == 'POST':
+        article = request.form['article']
+        summary = generate_summary(article)
+        sentiment_score = analyze_sentiment(summary)
+        return render_template('index.html', summary=summary, sentiment_score=sentiment_score)
+    return render_template('index.html')
 
 if __name__ == '__main__':
-  app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000)
