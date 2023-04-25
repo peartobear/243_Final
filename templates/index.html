@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+
 
 
 <!DOCTYPE html>
@@ -77,6 +79,12 @@
             background: #444;
         }
 
+        .wrapper.pictureWrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         footer {
             font-size: 14px;
             text-align: center;
@@ -108,7 +116,92 @@
     <h2 class="block grey">Sentiment Score:</h2>
     <p class="block dark themed">Positive 🥳: {{ sentiment_score.pos }} | Neutral 😶: {{ sentiment_score.neu }} | Negative 😔: {{ sentiment_score.neg }}</p>
     {% endif %}
+    {% if sentiment_score %}
+    <div class="wrapper block pictureWrapper grey">
+    <div id="sentimentChart" style="width: 600px; height: 400px;"> </div>
+    </div>
+    {% endif %}
+
     <footer>Made with ❤️ by Adedeji Aluko, Jack O' Donoghue, Kashin Shah, Apurva Arni, Bora Unalmis, & Ankur Kumar</footer>
+
+    <script>
+        {% if sentiment_score %}
+            const sentimentData = [
+                {name: 'Positive 🥳', value: {{ sentiment_score.pos }}, itemStyle: {color: '#4caf50'}},
+                {name: 'Neutral 😶', value: {{ sentiment_score.neu }}, itemStyle: {color: '#ffeb3b'}},
+                {name: 'Negative 😔', value: {{ sentiment_score.neg }}, itemStyle: {color: '#f44336'}}
+            ];
+    
+            const chartDom = document.getElementById('sentimentChart');
+            const sentimentChart = echarts.init(chartDom);
+            const option = {
+
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#222'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#222',
+                        fontFamily: 'system-ui, sans-serif',
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: sentimentData.map(data => data.name),
+                    axisLine: {
+                        lineStyle: {
+                            color: '#222'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#222',
+                        fontFamily: 'system-ui, sans-serif'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Sentiment Score',
+                        type: 'bar',
+                        barWidth: '50%',
+                        data: sentimentData,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        itemStyle: {
+                            borderRadius: 5,
+                            shadowBlur: 15,
+                            shadowColor: 'rgba(0, 0, 0, 0.3)'
+                        },
+                        label: {
+                            show: true,
+                            position: 'right',
+                            color: '#222',
+                            fontFamily: 'system-ui, sans-serif'
+                        }
+                    }
+                ]
+            };
+    
+            sentimentChart.setOption(option);
+        {% endif %}
+    </script>
+    
+    
+ 
+    
 
 </body>
 
