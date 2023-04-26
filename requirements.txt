@@ -16,11 +16,7 @@ pathy==0.10.1
 preshed==3.0.8
 pydantic==1.10.7
 requests==2.28.2
-sentencepiece==0.1.98
 smart-open==6.3.0
-spacy==3.5.2
-spacy-legacy==3.0.12
-spacy-loggers==1.0.4
 srsly==2.4.6
 thinc==8.1.9
 tqdm==4.65.0
