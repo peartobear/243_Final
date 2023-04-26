@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 model.pt
-/tf-m1-env
-/testenv
+tf-m1-env/
+testenv/
 =======
 # Byte-compiled / optimized / DLL files
 __pycache__/
