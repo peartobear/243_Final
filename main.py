@@ -59,8 +59,9 @@ def index():
     if request.method == 'POST':
         article = request.form['article']
         summary = generate_summary(article)
-        sentiment_score = analyze_sentiment(summary)
-        return render_template('index.html', summary=summary, sentiment_score=sentiment_score)
+        sentiment_score_summary = analyze_sentiment(summary)
+        sentiment_score_article = analyze_sentiment(article)
+        return render_template('index.html', summary=summary, sentiment_score_summary=sentiment_score_summary, sentiment_score_article=sentiment_score_article)
     return render_template('index.html')
 
 if __name__ == '__main__':

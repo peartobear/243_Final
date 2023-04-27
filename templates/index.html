@@ -107,16 +107,26 @@
             <input type="hidden" name="summary" value="{{ summary }}">
         {% endif %}
     </form>
+    {% if sentiment_score_article %}
+    <h2 class="block grey">Article Sentiment Score:</h2>
+        <p class="block dark themed">Positive 🥳: {{ sentiment_score_article.pos }} | Neutral 😶: {{ sentiment_score_article.neu }} | Negative 😔: {{ sentiment_score_article.neg }}</p>
+    {% endif %}
+    {% if sentiment_score_article %}
+    <div class="wrapper block pictureWrapper grey">
+        <div id="articleSentimentChart" style="width: 600px; height: 400px;"> </div>
+    </div>
+    {% endif %}
+
     {% if summary %}
         <h2 class="block grey">Generated Summary:</h2>
         <p class="block">{{ summary }}</p>
     {% endif %}
 
-    {% if sentiment_score %}
+    {% if sentiment_score_summary %}
     <h2 class="block grey">Sentiment Score:</h2>
-    <p class="block dark themed">Positive 🥳: {{ sentiment_score.pos }} | Neutral 😶: {{ sentiment_score.neu }} | Negative 😔: {{ sentiment_score.neg }}</p>
+    <p class="block dark themed">Positive 🥳: {{ sentiment_score_summary.pos }} | Neutral 😶: {{ sentiment_score_summary.neu }} | Negative 😔: {{ sentiment_score_summary.neg }}</p>
     {% endif %}
-    {% if sentiment_score %}
+    {% if sentiment_score_summary %}
     <div class="wrapper block pictureWrapper grey">
     <div id="sentimentChart" style="width: 600px; height: 400px;"> </div>
     </div>
@@ -125,11 +135,90 @@
     <footer>Made with ❤️ by Adedeji Aluko, Jack O' Donoghue, Kashin Shah, Apurva Arni, Bora Unalmis, & Ankur Kumar</footer>
 
     <script>
-        {% if sentiment_score %}
+ 
+ {% if sentiment_score_article %}
+    const articleSentimentData = [
+        {name: 'Positive 🥳', value: {{ sentiment_score_article.pos }}, itemStyle: {color: '#4caf50'}},
+        {name: 'Neutral 😶', value: {{ sentiment_score_article.neu }}, itemStyle: {color: '#ffeb3b'}},
+        {name: 'Negative 😔', value: {{ sentiment_score_article.neg }}, itemStyle: {color: '#f44336'}}
+    ];
+
+    const articleChartDom = document.getElementById('articleSentimentChart');
+    const articleSentimentChart = echarts.init(articleChartDom);
+    const articleOption = {
+
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+            axisLine: {
+                lineStyle: {
+                    color: '#222'
+                }
+            },
+            axisLabel: {
+                color: '#222',
+                fontFamily: 'system-ui, sans-serif',
+            }
+        },
+        yAxis: {
+            type: 'category',
+            data: articleSentimentData.map(data => data.name),
+            axisLine: {
+                lineStyle: {
+                    color: '#222'
+                }
+            },
+            axisLabel: {
+                color: '#222',
+                fontFamily: 'system-ui, sans-serif'
+            }
+        },
+        series: [
+            {
+                name: 'Sentiment Score',
+                type: 'bar',
+                barWidth: '50%',
+                data: articleSentimentData,
+                emphasis: {
+                    focus: 'series'
+                },
+                itemStyle: {
+                    borderRadius: 5,
+                    shadowBlur: 15,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                },
+                label: {
+                    show: true,
+                    position: 'right',
+                    color: '#222',
+                    fontFamily: 'system-ui, sans-serif'
+                }
+            }
+        ]
+    };
+
+    articleSentimentChart.setOption(articleOption);
+{% endif %}
+
+
+
+
+
+
+        {% if sentiment_score_summary %}
             const sentimentData = [
-                {name: 'Positive 🥳', value: {{ sentiment_score.pos }}, itemStyle: {color: '#4caf50'}},
-                {name: 'Neutral 😶', value: {{ sentiment_score.neu }}, itemStyle: {color: '#ffeb3b'}},
-                {name: 'Negative 😔', value: {{ sentiment_score.neg }}, itemStyle: {color: '#f44336'}}
+                {name: 'Positive 🥳', value: {{ sentiment_score_summary.pos }}, itemStyle: {color: '#4caf50'}},
+                {name: 'Neutral 😶', value: {{ sentiment_score_summary.neu }}, itemStyle: {color: '#ffeb3b'}},
+                {name: 'Negative 😔', value: {{ sentiment_score_summary.neg }}, itemStyle: {color: '#f44336'}}
             ];
     
             const chartDom = document.getElementById('sentimentChart');
@@ -141,7 +230,7 @@
                     axisPointer: {
                         type: 'shadow'
                     }
-                },
+                },  
                 grid: {
                     containLabel: true
                 },
